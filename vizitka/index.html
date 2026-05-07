@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MaralYm — магазин одежды</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="promo-bar">СКИДКА 15% НА ПЕРВЫЙ ЗАКАЗ С КОДОМ MARALYM</div>
+
+  <header class="header">
+    <div class="container header-inner">
+      <div class="logo">
+        <strong>MaralYm</strong>
+        <span>магазин одежды и стильных образов</span>
+      </div>
+
+      <div class="header-search">
+        <input type="text" id="searchInput" placeholder="Поиск товаров..." class="search-box">
+      </div>
+
+      <nav class="nav" aria-label="Главная навигация">
+        <button class="nav-btn" id="profileBtn" title="Профиль">👤</button>
+        <button class="nav-btn" id="favoritesBtn" title="Избранное">❤️ <span class="badge-count" id="favCount">0</span></button>
+        <button class="nav-btn" id="cartBtn" title="Корзина">🛒 <span class="badge-count" id="cartCount">0</span></button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="hero-overlay"></div>
+      <div class="container hero-card">
+        <div class="hero-top">
+          <div class="hero-brand">MARALYM</div>
+          <div class="hero-controls">
+            <a class="hero-link" href="#catalog">НОВИНКИ</a>
+            <a class="hero-link" href="#catalog">ПЛАТЬЯ</a>
+            <a class="hero-link" href="#catalog">ВЕРХ</a>
+            <a class="hero-link hero-sale" href="#catalog">SALE</a>
+          </div>
+        </div>
+
+        <div class="hero-copy">
+          <div class="hero-kicker">ВЕСНА-ЛЕТО 2025</div>
+          <h1>Nouvelle Saison</h1>
+          <p class="hero-subtitle">Создано для тех, кто не боится выделяться. Лёгкость льна, мягкость шёлка, смелость цвета.</p>
+          <div class="hero-actions">
+            <a class="hero-primary" href="#catalog">СМОТРЕТЬ КОЛЛЕКЦИЮ</a>
+            <a class="hero-secondary" href="#about">НАШ МАНИФЕСТ</a>
+          </div>
+        </div>
+
+        <div class="hero-scroll">ПРОКРУТИТЕ</div>
+      </div>
+    </section>
+
+    <div class="ticker">
+      <div class="ticker-track">
+        <span>КАЧЕСТВО</span>
+        <span>ЛЮКСОВЫЕ ТКАНИ</span>
+        <span>NOUVELLE SAISON</span>
+        <span>ВДОХНОВЕНИЕ НА КАЖДЫЙ ДЕНЬ</span>
+        <span>MADE WITH LOVE</span>
+        <span>ОСОЗНАННАЯ МОДА</span>
+      </div>
+    </div>
+
+    <section class="section categories-section" id="catalog">
+      <div class="container">
+        <div class="section-head section-head--split">
+          <div>
+            <p class="eyebrow">— КАТАЛОГ</p>
+            <h2>Категории</h2>
+          </div>
+          <a class="section-link" href="#productsSection">ВСЕ ТОВАРЫ →</a>
+        </div>
+
+        <div class="category-grid">
+          <button class="category-card active" data-filter="all">
+            <span class="category-image category-image--one"></span>
+            <span class="category-label">ПЛАТЬЯ</span>
+            <span class="category-meta">86 позиций</span>
+          </button>
+          <button class="category-card" data-filter="outerwear">
+            <span class="category-image category-image--two"></span>
+            <span class="category-label">ЖАКЕТЫ &amp; ПАЛЬТО</span>
+            <span class="category-meta">42 позиции</span>
+          </button>
+          <button class="category-card" data-filter="shirts">
+            <span class="category-image category-image--three"></span>
+            <span class="category-label">ТОПЫ &amp; БЛУЗЫ</span>
+            <span class="category-meta">118 позиций</span>
+          </button>
+          <button class="category-card" data-filter="pants">
+            <span class="category-image category-image--four"></span>
+            <span class="category-label">БРЮКИ &amp; ЮБКИ</span>
+            <span class="category-meta">65 позиций</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section news-section" id="productsSection">
+      <div class="container">
+        <div class="section-head section-head--split">
+          <div>
+            <p class="eyebrow">— СВЕЖИЕ ПОСТУПЛЕНИЯ</p>
+            <h2>Новинки</h2>
+          </div>
+          <div class="section-filters">
+            <button class="filter-chip active" data-filter="all">ВСЕ</button>
+            <button class="filter-chip" data-filter="dresses">ПЛАТЬЯ</button>
+            <button class="filter-chip" data-filter="shirts">ВЕРХ</button>
+            <button class="filter-chip" data-filter="pants">НИЗ</button>
+            <button class="filter-chip" data-filter="outerwear">ПАЛЬТО</button>
+          </div>
+        </div>
+
+        <div class="filters-wrapper">
+          <div class="price-filter">
+            <label>Цена: <span id="priceLabel">0 - 10000 сом</span></label>
+            <input type="range" id="priceRange" min="0" max="10000" value="10000" class="price-slider">
+          </div>
+        </div>
+
+        <div class="products" id="products"></div>
+        <div class="catalog-footer">
+          <a class="catalog-button" href="#home">ВЕСЬ КАТАЛОГ →</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="about">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">— РЕДАКЦИЯ</p>
+            <h2>Лукбук</h2>
+          </div>
+        </div>
+
+        <div class="lookbook-grid">
+          <article class="lookbook-card lookbook-card--dark">
+            <span class="lookbook-index">01</span>
+            <span class="lookbook-kicker">LOOK 01</span>
+            <h3>Повседневный образ</h3>
+          </article>
+          <article class="lookbook-card lookbook-card--light">
+            <span class="lookbook-index">02</span>
+            <span class="lookbook-kicker">LOOK 02</span>
+            <h3>Вечерний LOOK</h3>
+          </article>
+          <article class="lookbook-card lookbook-card--accent">
+            <span class="lookbook-index">03</span>
+            <span class="lookbook-kicker">LOOK 03</span>
+            <h3>Рабочий стиль</h3>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section manifesto-section">
+      <div class="container manifesto-grid">
+        <div class="manifesto-left">
+          <p class="eyebrow">— ОСТАВАЙТЕСЬ В ТЕМЕ</p>
+          <h2>Первыми узнавайте о новинках</h2>
+          <p>Коллекции, скидки и закрытые распродажи — только для подписчиков.</p>
+          <form class="manifesto-form" onsubmit="event.preventDefault(); alert('Спасибо! Мы отправим обновления на ваш email.');">
+            <input type="email" placeholder="Ваш email" required>
+            <button type="submit">OK</button>
+          </form>
+        </div>
+
+        <div class="manifesto-right">
+          <p class="eyebrow">— ФИЛОСОФИЯ</p>
+          <h2>"МОДА — ЭТО НЕ<br>ОДЕЖДА. ЭТО <span class="quote-accent">ОЩУЩЕНИЕ</span>."</h2>
+          <p>Мы создаём вещи для реальной жизни — офиса, свиданий, путешествий и всего, что между ними.</p>
+          <a class="manifesto-link" href="#contacts">ЧИТАТЬ НАШУ ИСТОРИЮ →</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="contacts">
+      <div class="container">
+        <div class="footer-links-grid">
+          <div>
+            <strong>MARALYM</strong>
+            <p>Женская одежда премиум-класса. Москва — Санкт-Петербург.</p>
+          </div>
+          <div>
+            <strong>КАТАЛОГ</strong>
+            <ul class="footer-list">
+              <li>Новинки</li>
+              <li>Платья</li>
+              <li>Верхняя одежда</li>
+              <li>Топы</li>
+              <li>Брюки &amp; Юбки</li>
+              <li>Sale</li>
+            </ul>
+          </div>
+          <div>
+            <strong>КЛИЕНТАМ</strong>
+            <ul class="footer-list">
+              <li>Доставка</li>
+              <li>Возврат</li>
+              <li>Размерная сетка</li>
+              <li>Уход за вещами</li>
+              <li>FAQ</li>
+            </ul>
+          </div>
+          <div>
+            <strong>О БРЕНДЕ</strong>
+            <ul class="footer-list">
+              <li>История</li>
+              <li>Производство</li>
+              <li>Sustainability</li>
+              <li>Пресса</li>
+              <li>Карьера</li>
+            </ul>
+          </div>
+          <div>
+            <strong>КОНТАКТЫ</strong>
+            <ul class="footer-list">
+              <li>hello@maralym.ru</li>
+              <li>+7 (495) 000-00-00</li>
+              <li>Instagram</li>
+              <li>Pinterest</li>
+              <li>VK</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div>© 2025 MARALYM. Все права защищены.</div>
+      <div class="footer-policy-links">
+        <a href="#">Конфиденциальность</a>
+        <a href="#">Условия использования</a>
+        <a href="#">Cookies</a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="modal" id="modal" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-visual" id="modalVisual">
+        <div class="badge" id="modalCategoryBadge">Категория</div>
+        <div>
+          <h3 id="modalTitleVisual">Название товара</h3>
+          <div id="modalMiniText">Краткое описание</div>
+        </div>
+      </div>
+
+      <div class="modal-content">
+        <button class="close" id="closeModal" aria-label="Закрыть окно">&times;</button>
+        <h2 id="modalTitle">Название товара</h2>
+        <div class="rating" id="modalRating"></div>
+        <div class="modal-price" id="modalPrice">0 сом</div>
+        <p id="modalDescription"></p>
+        
+        <div class="modal-controls">
+          <div class="size-select">
+            <label>Размер:</label>
+            <select id="sizeSelect">
+              <option>Выберите размер</option>
+            </select>
+          </div>
+          
+          <div class="quantity-select">
+            <label>Количество:</label>
+            <div class="quantity-input">
+              <button id="decreaseQty" class="qty-btn">−</button>
+              <input type="number" id="quantityInput" value="1" min="1" max="100">
+              <button id="increaseQty" class="qty-btn">+</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button class="btn btn-primary" id="addToCartBtn">Добавить в корзину</button>
+          <button class="btn btn-secondary" id="addToFavBtn">❤️ В избранное</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cart Sidebar -->
+  <div class="sidebar" id="cartSidebar">
+    <div class="sidebar-header">
+      <h2>Корзина</h2>
+      <button class="close-sidebar" id="closeCart">&times;</button>
+    </div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="sidebar-footer">
+      <div class="cart-total">
+        <strong>Итого:</strong>
+        <span id="cartTotal">0 сом</span>
+      </div>
+      <button class="btn btn-primary" id="checkoutBtn">Оформить заказ</button>
+    </div>
+  </div>
+
+  <!-- Favorites Sidebar -->
+  <div class="sidebar" id="favoritesSidebar">
+    <div class="sidebar-header">
+      <h2>Избранное</h2>
+      <button class="close-sidebar" id="closeFavorites">&times;</button>
+    </div>
+    <div class="favorites-items" id="favoritesItems"></div>
+  </div>
+
+  <!-- Profile Modal -->
+  <div class="modal" id="profileModal" aria-hidden="true">
+    <div class="modal-card profile-modal-card">
+      <div class="modal-content">
+        <button class="close" id="closeProfile" aria-label="Закрыть окно">&times;</button>
+        <h2>Мой профиль</h2>
+        
+        <div class="profile-tabs">
+          <button class="profile-tab active" data-tab="orders">История заказов</button>
+          <button class="profile-tab" data-tab="info">Мои данные</button>
+        </div>
+
+        <div class="profile-tab-content" id="ordersTab">
+          <h3>История заказов</h3>
+          <div id="ordersList"></div>
+        </div>
+
+        <div class="profile-tab-content hidden" id="infoTab">
+          <h3>Контактная информация</h3>
+          <form class="profile-form">
+            <input type="text" id="userName" placeholder="Имя" value="">
+            <input type="email" id="userEmail" placeholder="Email" value="">
+            <input type="tel" id="userPhone" placeholder="Номер телефона" value="">
+            <input type="text" id="userAddress" placeholder="Адрес доставки" value="">
+            <button type="button" class="btn btn-primary" id="saveProfileBtn">Сохранить</button>
+            <button type="button" class="btn" id="logoutBtn" style="background: #999; margin-top: 8px;">Выйти</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Checkout Modal -->
+  <div class="modal" id="checkoutModal" aria-hidden="true">
+    <div class="modal-card">
+      <div class="modal-content">
+        <button class="close" id="closeCheckout" aria-label="Закрыть окно">&times;</button>
+        <h2>Оформление заказа</h2>
+        
+        <form class="checkout-form" id="checkoutForm">
+          <div class="form-group">
+            <label>Имя:</label>
+            <input type="text" id="checkoutName" required>
+          </div>
+          
+          <div class="form-group">
+            <label>Email:</label>
+            <input type="email" id="checkoutEmail" required>
+          </div>
+          
+          <div class="form-group">
+            <label>Номер телефона:</label>
+            <input type="tel" id="checkoutPhone" required>
+          </div>
+          
+          <div class="form-group">
+            <label>Адрес доставки:</label>
+            <textarea id="checkoutAddress" required></textarea>
+          </div>
+          
+          <div class="form-group">
+            <label>Способ доставки:</label>
+            <select id="deliveryMethod" required>
+              <option value="pickup">Самовывоз из магазина</option>
+              <option value="delivery">Доставка по городу (500 сом)</option>
+              <option value="country">Доставка по стране (1500 сом)</option>
+            </select>
+          </div>
+
+          <div class="checkout-summary">
+            <div class="summary-row">
+              <span>Стоимость товаров:</span>
+              <span id="summaryProducts">0 сом</span>
+            </div>
+            <div class="summary-row">
+              <span>Доставка:</span>
+              <span id="summaryDelivery">0 сом</span>
+            </div>
+            <div class="summary-row total">
+              <strong>Итого к оплате:</strong>
+              <strong id="summaryTotal">0 сом</strong>
+            </div>
+          </div>
+          
+          <button type="submit" class="btn btn-primary" style="width: 100%;">Подтвердить заказ</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Overlay for sidebars -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- Login Modal -->
+  <div class="modal" id="loginModal" aria-hidden="true">
+    <div class="modal-card">
+      <div class="modal-content">
+        <h2>Добро пожаловать в MaralYm!</h2>
+        <p>Укажите ваш email для входа:</p>
+        <form id="loginForm">
+          <div class="form-group">
+            <input type="email" id="loginEmail" placeholder="your@email.com" required>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: 100%;">Войти</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
