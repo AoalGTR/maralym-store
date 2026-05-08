@@ -45,10 +45,23 @@ git push -u origin main
 | Параметр | Значение |
 |----------|----------|
 | **Name** | maralym-api |
-| **Environment** | Python 3 |
+| **Language** | Python 3 |
 | **Build Command** | `pip install -r backend/requirements.txt` |
 | **Start Command** | `gunicorn -w 4 -k uvicorn.workers.UvicornWorker -b 0.0.0.0:$PORT backend.main:app` |
 | **Plan** | Free |
+
+Если Render пишет `Name is already in use`, значит это имя уже занято в твоём аккаунте или проекте. Тогда просто укажи другое уникальное имя, например `maralym-api-1` или `maralym-api-prod`, либо открой уже созданный сервис и используй его вместо создания нового.
+
+Перед деплоем обязательно проверь, что изменения загружены в GitHub. Render деплоит только то, что уже в remote-ветке:
+
+```bash
+git status
+git add backend/requirements.txt DEPLOY_GUIDE.md
+git commit -m "Fix deploy settings and dependencies"
+git push
+```
+
+Если в `git status` есть изменения, но ты не сделал `git push`, Render соберёт старую версию проекта.
 
 ### 2.3 Нажми "Create Web Service"
 - Ждёшь ~2 минуты пока Render разворачивает приложение
