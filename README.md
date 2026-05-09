@@ -45,6 +45,8 @@ uvicorn backend.main:app --reload
 
 Backend будет доступен на `http://localhost:8000`
 
+Это только для локального запуска. В production используй URL Render, например `https://maralym-store-1.onrender.com`.
+
 ### Frontend
 
 ```bash
@@ -114,7 +116,7 @@ python backend/tests/test_endpoints.py
 
 ## 🔐 Безопасность
 
-- CORS включен для `http://localhost:8001` (dev) и production URL
+- CORS включен для development и production
 - Email валидация через Pydantic
 - Базовая сессия через `session_email` в JSON
 - *(Планируется: JWT/signed cookies для multi-user)*

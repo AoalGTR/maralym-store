@@ -75,14 +75,18 @@ git push
 
 ### 3.1 Обнови API_BASE в `vizitka/script.js`
 
-Открой файл и найди строку:
+Открой файл и найди строку `const API_BASE = ...`.
+
+Если там `localhost` или старый URL, замени на актуальный URL Render.
+
+Пример старого значения:
 ```javascript
 const API_BASE = 'http://localhost:8000/api';
 ```
 
 Замени на (подставь свой URL с Render):
 ```javascript
-const API_BASE = 'https://maralym-api.onrender.com/api';
+const API_BASE = 'https://maralym-store-1.onrender.com/api';
 // или просто:
 const API_BASE = 'https://YOUR-RENDER-URL/api';
 ```
