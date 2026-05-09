@@ -9,7 +9,7 @@ let favorites = [];
 let orders = [];
 let userProfile = { name: '', email: '', phone: '', address: '' };
 
-const API_BASE = 'https://maralym-store-1.onrender.com/api';
+const API_BASE = 'https://maralym-store-4xe7.onrender.com/api';
 
 async function initState() {
   try {
