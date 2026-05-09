@@ -814,9 +814,9 @@ textarea {
 
 .manifesto-left,
 .manifesto-right {
-  /* reduce poster height by 50% (was 408px) and shrink vertical padding accordingly */
-  min-height: 204px;
-  padding: 42px 64px;
+  /* reduce poster height by another 50% */
+  min-height: 102px;
+  padding: 21px 64px;
   min-width: 0;
   overflow: hidden;
 }
