@@ -110,16 +110,62 @@ textarea {
 
 .nav-btn {
   position: relative;
-  border: 0;
-  background: transparent;
-  font-size: 1.05rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 48px;
+  height: 48px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.9);
   cursor: pointer;
-  padding: 8px 10px;
+  padding: 0 14px;
   border-radius: 999px;
+  color: var(--ink);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
+  gap: 10px;
+  transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
 }
 
 .nav-btn:hover {
-  background: rgba(0, 0, 0, 0.06);
+  background: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.08);
+}
+
+.nav-icon {
+  width: 22px;
+  height: 22px;
+  display: inline-block;
+  background-color: currentColor;
+  -webkit-mask: center / contain no-repeat;
+  mask: center / contain no-repeat;
+  flex: 0 0 auto;
+}
+
+.nav-icon--profile {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M12 12a5 5 0 1 0-5-5a5 5 0 0 0 5 5Zm0 2c-4.42 0-8 2.24-8 5v1h16v-1c0-2.76-3.58-5-8-5Z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M12 12a5 5 0 1 0-5-5a5 5 0 0 0 5 5Zm0 2c-4.42 0-8 2.24-8 5v1h16v-1c0-2.76-3.58-5-8-5Z'/%3E%3C/svg%3E");
+}
+
+.nav-icon--favorites {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5A5.4 5.4 0 0 1 7.5 3a5.9 5.9 0 0 1 4.5 2.1A5.9 5.9 0 0 1 16.5 3A5.4 5.4 0 0 1 22 8.5c0 3.78-3.4 6.86-8.55 11.53L12 21.35Z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5A5.4 5.4 0 0 1 7.5 3a5.9 5.9 0 0 1 4.5 2.1A5.9 5.9 0 0 1 16.5 3A5.4 5.4 0 0 1 22 8.5c0 3.78-3.4 6.86-8.55 11.53L12 21.35Z'/%3E%3C/svg%3E");
+}
+
+.nav-icon--cart {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M7 18a2 2 0 1 0 2 2a2 2 0 0 0-2-2Zm10 0a2 2 0 1 0 2 2a2 2 0 0 0-2-2Zm1.5-3H8.2a1 1 0 0 1-1-.78L5.1 6H2V4h4.7a1 1 0 0 1 1 .78L8.3 11h9.9l1.4-6H8v-2h12a1 1 0 0 1 1 1.2l-1.9 8.13A3 3 0 0 1 18.5 15Z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M7 18a2 2 0 1 0 2 2a2 2 0 0 0-2-2Zm10 0a2 2 0 1 0 2 2a2 2 0 0 0-2-2Zm1.5-3H8.2a1 1 0 0 1-1-.78L5.1 6H2V4h4.7a1 1 0 0 1 1 .78L8.3 11h9.9l1.4-6H8v-2h12a1 1 0 0 1 1 1.2l-1.9 8.13A3 3 0 0 1 18.5 15Z'/%3E%3C/svg%3E");
+}
+
+.nav-btn .badge-count {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+}
+
+.nav-btn#favoritesBtn,
+.nav-btn#cartBtn {
+  padding-right: 12px;
 }
 
 .badge-count {
@@ -687,11 +733,13 @@ textarea {
   flex-direction: column;
   justify-content: flex-end;
   overflow: hidden;
-    transition: transform 0.28s ease;
-  }
+  transition: transform 0.28s ease;
+  background-size: cover;
+  background-position: center;
+}
 
-  .lookbook-card:hover {
-    transform: translateY(-4px);
+.lookbook-card:hover {
+  transform: translateY(-4px);
 }
 
 .lookbook-card::before {
@@ -702,15 +750,21 @@ textarea {
 }
 
 .lookbook-card--dark {
-  background: linear-gradient(180deg, #132142 0%, #060b19 100%);
+  background-image:
+    linear-gradient(180deg, rgba(9, 16, 32, 0.08) 0%, rgba(0, 0, 0, 0.62) 100%),
+    url("https://images.unsplash.com/photo-1496747611176-843222e1e57c?auto=format&fit=crop&w=1200&q=80");
 }
 
 .lookbook-card--light {
-  background: linear-gradient(180deg, #d7d0c6 0%, #87807a 100%);
+  background-image:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.06) 0%, rgba(0, 0, 0, 0.46) 100%),
+    url("https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=1200&q=80");
 }
 
 .lookbook-card--accent {
-  background: linear-gradient(180deg, #712936 0%, #15080c 100%);
+  background-image:
+    linear-gradient(180deg, rgba(111, 41, 54, 0.06) 0%, rgba(0, 0, 0, 0.52) 100%),
+    url("https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1200&q=80");
 }
 
 .lookbook-index {
@@ -753,12 +807,16 @@ textarea {
   display: grid;
   grid-template-columns: 50% 50%;
   gap: 0;
+  /* make the manifesto grid span the full viewport so left/right backgrounds reach the edges */
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
 }
 
 .manifesto-left,
 .manifesto-right {
-  min-height: 408px;
-  padding: 84px 64px;
+  /* reduce poster height by 50% (was 408px) and shrink vertical padding accordingly */
+  min-height: 204px;
+  padding: 42px 64px;
   min-width: 0;
   overflow: hidden;
 }
