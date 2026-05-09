@@ -5,9 +5,22 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Literal
 
-from fastapi import FastAPI, HTTPException
+import os
+import shutil
+from fastapi import FastAPI, HTTPException, UploadFile, File, Header
+from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, EmailStr, Field
+
+from . import db as _db
+
+# Admin key for simple protection (set ADMIN_KEY env var in production)
+ADMIN_KEY = os.environ.get("ADMIN_KEY", "dev-admin-key")
+
+# Ensure uploads directory exists
+UPLOAD_DIR = Path(__file__).resolve().parent / "static" / "uploads"
+UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+
 
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -177,10 +190,21 @@ def save_state(state: dict[str, Any]) -> None:
 
 
 def get_product(product_id: int) -> dict[str, Any]:
-    product = next((item for item in PRODUCTS if item["id"] == product_id), None)
-    if not product:
+    p = _db.get_product_by_id(product_id)
+    if not p:
         raise HTTPException(status_code=404, detail="Product not found")
-    return product
+    # convert SQLModel to dict and normalize tags
+    return {
+        "id": p.id,
+        "name": p.name,
+        "category": p.category,
+        "badge": p.badge,
+        "image": p.image,
+        "price": p.price,
+        "description": p.description,
+        "tags": p.tags.split(",") if p.tags else [],
+        "rating": p.rating,
+    }
 
 
 class CartItemIn(BaseModel):
@@ -224,6 +248,18 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Mount static files (for uploaded images)
+app.mount("/static", StaticFiles(directory=BASE_DIR / "static"), name="static")
+
+
+# Initialize DB and seed products if empty
+_db.init_db()
+# seed DB from PRODUCTS if empty
+if not _db.list_products():
+    for p in PRODUCTS:
+        _db.create_product(p)
+
+
 
 @app.get("/api/health")
 def health_check() -> dict[str, str]:
@@ -248,10 +284,22 @@ def logout() -> dict[str, str]:
 
 @app.get("/api/products")
 def list_products(category: str | None = None, q: str | None = None, max_price: int | None = None) -> dict[str, Any]:
-    items = PRODUCTS
-
-    if category and category != "all":
-        items = [product for product in items if product["category"] == category]
+    # fetch from DB
+    db_items = _db.list_products(category)
+    items = [
+        {
+            "id": p.id,
+            "name": p.name,
+            "category": p.category,
+            "badge": p.badge,
+            "image": p.image,
+            "price": p.price,
+            "description": p.description,
+            "tags": p.tags.split(",") if p.tags else [],
+            "rating": p.rating,
+        }
+        for p in db_items
+    ]
 
     if max_price is not None:
         items = [product for product in items if product["price"] <= max_price]
@@ -261,7 +309,7 @@ def list_products(category: str | None = None, q: str | None = None, max_price: 
         items = [
             product
             for product in items
-            if query in product["name"].lower() or query in product["description"].lower()
+            if query in (product["name"] or "").lower() or query in (product["description"] or "").lower()
         ]
 
     return {"items": items, "count": len(items)}
@@ -270,6 +318,70 @@ def list_products(category: str | None = None, q: str | None = None, max_price: 
 @app.get("/api/products/{product_id}")
 def read_product(product_id: int) -> dict[str, Any]:
     return get_product(product_id)
+
+
+def check_admin(key: str | None):
+    if key != ADMIN_KEY:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+
+
+@app.get("/api/admin/products")
+def admin_list_products(x_admin_key: str | None = Header(None)) -> dict[str, Any]:
+    check_admin(x_admin_key)
+    db_items = _db.list_products()
+    items = [
+        {
+            "id": p.id,
+            "name": p.name,
+            "category": p.category,
+            "badge": p.badge,
+            "image": p.image,
+            "price": p.price,
+            "description": p.description,
+            "tags": p.tags.split(",") if p.tags else [],
+            "rating": p.rating,
+        }
+        for p in db_items
+    ]
+    return {"items": items}
+
+
+@app.post("/api/admin/products")
+def admin_create_product(payload: dict, x_admin_key: str | None = Header(None)) -> dict[str, Any]:
+    check_admin(x_admin_key)
+    p = _db.create_product(payload)
+    return {"product": {"id": p.id}}
+
+
+@app.put("/api/admin/products/{product_id}")
+def admin_update_product(product_id: int, payload: dict, x_admin_key: str | None = Header(None)) -> dict[str, Any]:
+    check_admin(x_admin_key)
+    p = _db.update_product(product_id, payload)
+    if not p:
+        raise HTTPException(status_code=404, detail="Product not found")
+    return {"product": {"id": p.id}}
+
+
+@app.delete("/api/admin/products/{product_id}")
+def admin_delete_product(product_id: int, x_admin_key: str | None = Header(None)) -> dict[str, Any]:
+    check_admin(x_admin_key)
+    ok = _db.delete_product(product_id)
+    if not ok:
+        raise HTTPException(status_code=404, detail="Product not found")
+    return {"deleted": True}
+
+
+@app.post("/api/admin/upload-image")
+def admin_upload_image(file: UploadFile = File(...), x_admin_key: str | None = Header(None)) -> dict[str, Any]:
+    check_admin(x_admin_key)
+    # save file to UPLOAD_DIR
+    filename = f"{int(datetime.now().timestamp())}_{file.filename}"
+    dest = UPLOAD_DIR / filename
+    with dest.open("wb") as fh:
+        shutil.copyfileobj(file.file, fh)
+
+    public_url = f"/static/uploads/{filename}"
+    return {"url": public_url}
 
 
 @app.get("/api/state")

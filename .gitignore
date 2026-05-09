@@ -35,3 +35,4 @@ Thumbs.db
 # Node (if added later)
 node_modules/
 npm-debug.log
+.vercel

@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Admin — MaralYm</title>
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+  <div class="admin">
+    <h1>Admin Panel — MaralYm</h1>
+    <div class="login">
+      <label>Admin Key: <input id="adminKey" type="text" placeholder="Enter admin key"></label>
+      <button id="btnAuth">Authenticate</button>
+    </div>
+
+    <div id="adminArea" class="hidden">
+      <section class="controls">
+        <h2>Создать товар</h2>
+        <form id="createForm">
+          <input id="name" placeholder="Название" required>
+          <input id="category" placeholder="Категория" required>
+          <input id="price" type="number" placeholder="Цена" required>
+          <input id="badge" placeholder="Бейдж">
+          <input id="tags" placeholder="Теги (через запятую)">
+          <textarea id="description" placeholder="Описание"></textarea>
+          <input id="imageFile" type="file" accept="image/*">
+          <button type="submit">Создать</button>
+        </form>
+      </section>
+
+      <section>
+        <h2>Товары</h2>
+        <div id="productsList"></div>
+      </section>
+    </div>
+  </div>
+  <script>
+    // Production backend API base (Render). Change if different.
+    window.MARALYM_API_BASE = 'https://maralym-store-1.onrender.com/api';
+  </script>
+  <script src="admin.js"></script>
+</body>
+</html>
