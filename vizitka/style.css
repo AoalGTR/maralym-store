@@ -816,8 +816,8 @@ textarea {
 .manifesto-left,
 .manifesto-right {
   /* bring the poster back to a readable editorial height */
-  min-height: 370px;
-  padding: 58px 64px 44px;
+  min-height: 320px;
+  padding: 46px 64px 34px;
   min-width: 0;
   overflow: hidden;
 }
@@ -842,31 +842,31 @@ textarea {
 
 .manifesto-left h2,
 .manifesto-right h2 {
-  margin: 14px 0 12px;
+  margin: 12px 0 10px;
   font-family: "Bebas Neue", sans-serif;
-  font-size: clamp(2.6rem, 6vw, 5rem);
-  line-height: 0.9;
+  font-size: clamp(2.35rem, 5.2vw, 4.45rem);
+  line-height: 0.86;
   text-transform: uppercase;
   letter-spacing: 0.02em;
 }
 
 .manifesto-left h2 {
   max-width: 7.4ch;
-  font-size: clamp(2.8rem, 5.8vw, 4.9rem);
+  font-size: clamp(2.55rem, 5vw, 4.25rem);
 }
 
 .manifesto-right h2 {
   width: 100%;
-  max-width: 450px;
-  font-size: clamp(2.35rem, 4.2vw, 3.45rem);
-  line-height: 0.88;
+  max-width: 430px;
+  font-size: clamp(2.1rem, 3.9vw, 3.1rem);
+  line-height: 0.86;
 }
 
 .manifesto-left p,
 .manifesto-right p {
-  max-width: 31ch;
-  line-height: 1.7;
-  font-size: 1.02rem;
+  max-width: 30ch;
+  line-height: 1.6;
+  font-size: 0.98rem;
   color: rgba(255, 255, 255, 0.45);
 }
 
@@ -889,7 +889,7 @@ textarea {
 
 .manifesto-form {
   display: flex;
-  margin-top: 30px;
+  margin-top: 24px;
   max-width: 380px;
 }
 
