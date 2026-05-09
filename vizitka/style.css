@@ -810,13 +810,14 @@ textarea {
   /* make the manifesto grid span the full viewport so left/right backgrounds reach the edges */
   width: 100vw;
   margin-left: calc(50% - 50vw);
+  align-items: stretch;
 }
 
 .manifesto-left,
 .manifesto-right {
-  /* reduce poster height by another 50% */
-  min-height: 102px;
-  padding: 21px 64px;
+  /* bring the poster back to a readable editorial height */
+  min-height: 370px;
+  padding: 58px 64px 44px;
   min-width: 0;
   overflow: hidden;
 }
@@ -850,19 +851,20 @@ textarea {
 }
 
 .manifesto-left h2 {
-  max-width: 7.2ch;
+  max-width: 7.4ch;
+  font-size: clamp(2.8rem, 5.8vw, 4.9rem);
 }
 
 .manifesto-right h2 {
   width: 100%;
-  max-width: 420px;
-  font-size: clamp(2rem, 3.8vw, 3.25rem);
-  line-height: 0.9;
+  max-width: 450px;
+  font-size: clamp(2.35rem, 4.2vw, 3.45rem);
+  line-height: 0.88;
 }
 
 .manifesto-left p,
 .manifesto-right p {
-  max-width: 30ch;
+  max-width: 31ch;
   line-height: 1.7;
   font-size: 1.02rem;
   color: rgba(255, 255, 255, 0.45);
@@ -887,7 +889,7 @@ textarea {
 
 .manifesto-form {
   display: flex;
-  margin-top: 34px;
+  margin-top: 30px;
   max-width: 380px;
 }
 
