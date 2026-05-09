@@ -155,8 +155,15 @@ function openProductModal(id) {
 
   // Fill size options
   const sizeSelect = document.getElementById('sizeSelect');
-  sizeSelect.innerHTML = '<option>Выберите размер</option>' + 
-    selectedProduct.tags.map(tag => `<option value="${tag}">${tag}</option>`).join('');
+  const tags = Array.isArray(selectedProduct.tags) ? selectedProduct.tags : [];
+  if (tags.length > 0) {
+    sizeSelect.disabled = false;
+    sizeSelect.innerHTML = '<option>Выберите размер</option>' + 
+      tags.map(tag => `<option value="${tag}">${tag}</option>`).join('');
+  } else {
+    sizeSelect.disabled = true;
+    sizeSelect.innerHTML = '<option value="">Без размера</option>';
+  }
 
   // Reset quantity
   document.getElementById('quantityInput').value = 1;
@@ -167,13 +174,13 @@ function openProductModal(id) {
   const isFav = favorites.includes(id);
   favBtn.innerHTML = isFav ? '❤️ В избранном' : '❤️ В избранное';
   addBtn.onclick = () => {
-    const size = sizeSelect.value;
-    if (size === 'Выберите размер') {
+    const size = sizeSelect.disabled ? null : sizeSelect.value;
+    if (!sizeSelect.disabled && size === 'Выберите размер') {
       alert('Пожалуйста, выберите размер');
       return;
     }
     const qty = parseInt(document.getElementById('quantityInput').value);
-    addToCart(id, qty, size);
+    addToCart(id, qty, size || null);
   };
   favBtn.onclick = () => toggleFavorite(id);
 
