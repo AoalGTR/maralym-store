@@ -1,9 +1,6 @@
 {
   "buildCommand": "echo 'Static site - no build needed'",
   "outputDirectory": "vizitka",
-  "env": {
-    "VITE_API_BASE": "@api-base"
-  },
   "rewrites": [
     {
       "source": "/(.*)",
