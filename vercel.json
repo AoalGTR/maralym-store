@@ -1,3 +1,8 @@
 {
-  "public": "vizitka"
+  "builds": [
+    { "src": "vizitka/**", "use": "@vercel/static" }
+  ],
+  "routes": [
+    { "src": "/(.*)", "dest": "/vizitka/$1" }
+  ]
 }
