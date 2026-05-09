@@ -526,6 +526,18 @@ document.querySelectorAll('.filter-btn, .filter-chip, .category-card').forEach(b
 
     currentFilter = targetFilter;
     renderProducts();
+
+    // After applying the filter, scroll to the products list so user sees filtered items
+    // Use a short timeout to ensure DOM has been updated by renderProducts
+    try {
+      setTimeout(() => {
+        if (productsRoot && typeof productsRoot.scrollIntoView === 'function') {
+          productsRoot.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 80);
+    } catch (e) {
+      // ignore if scroll fails
+    }
   });
 });
 
