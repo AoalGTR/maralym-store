@@ -1,6 +1,12 @@
 // Allow overriding API base for production hosts by setting `window.MARALYM_API_BASE`
 const API_BASE = (window.MARALYM_API_BASE && window.MARALYM_API_BASE.replace(/\/$/, '')) || (window.location.origin.replace(/:\d+$/, '') + '/api');
 let ADMIN_KEY = null;
+const DEFAULT_SIZES = ['XS', 'S', 'M', 'L'];
+
+const tagsInput = document.getElementById('tags');
+if (tagsInput && !tagsInput.value.trim()) {
+  tagsInput.value = DEFAULT_SIZES.join(', ');
+}
 
 function authHeaders(){
   return { 'Content-Type': 'application/json', 'x-admin-key': ADMIN_KEY };
@@ -51,7 +57,10 @@ document.getElementById('createForm').addEventListener('submit', async (e)=>{
   const category = document.getElementById('category').value.trim();
   const price = Number(document.getElementById('price').value);
   const badge = document.getElementById('badge').value.trim();
-  const tags = document.getElementById('tags').value.split(',').map(s=>s.trim()).filter(Boolean);
+  const tags = document.getElementById('tags').value
+    .split(',')
+    .map(s => s.trim())
+    .filter(Boolean);
   const description = document.getElementById('description').value.trim();
   const file = document.getElementById('imageFile').files[0];
 
@@ -62,7 +71,14 @@ document.getElementById('createForm').addEventListener('submit', async (e)=>{
     if(up.ok){ const u = await up.json(); imageUrl = u.url; } else { alert('Upload failed'); return; }
   }
 
-  const payload = { name, category, price, badge, tags, description, image: imageUrl };
+  const payload = { name, category, price, badge, tags: tags.length ? tags : DEFAULT_SIZES, description, image: imageUrl };
   const res = await fetch(API_BASE + '/admin/products', { method:'POST', headers: authHeaders(), body: JSON.stringify(payload) });
-  if(res.ok){ alert('Created'); document.getElementById('createForm').reset(); loadProducts(); } else { alert('Create failed'); }
+  if(res.ok){
+    alert('Created');
+    document.getElementById('createForm').reset();
+    if (tagsInput) tagsInput.value = DEFAULT_SIZES.join(', ');
+    loadProducts();
+  } else {
+    alert('Create failed');
+  }
 });
