@@ -7,36 +7,167 @@
   <link rel="stylesheet" href="admin.css">
 </head>
 <body>
-  <div class="admin">
-    <h1>Admin Panel — MaralYm</h1>
-    <div class="login">
-      <label>Admin Key: <input id="adminKey" type="text" placeholder="Enter admin key"></label>
-      <button id="btnAuth">Authenticate</button>
-    </div>
+  <div class="admin-container">
+    <!-- Header -->
+    <header class="admin-header">
+      <div class="header-content">
+        <h1>👔 MaralYm Admin Panel</h1>
+        <p class="subtitle">Управление товарами и изображениями</p>
+      </div>
+    </header>
 
-    <div id="adminArea" class="hidden">
-      <section class="controls">
-        <h2>Создать товар</h2>
-        <form id="createForm">
-          <input id="name" placeholder="Название" required>
-          <input id="category" placeholder="Категория" required>
-          <input id="price" type="number" placeholder="Цена" required>
-          <input id="badge" placeholder="Бейдж">
-          <input id="tags" placeholder="Теги (через запятую)">
-          <textarea id="description" placeholder="Описание"></textarea>
-          <input id="imageFile" type="file" accept="image/*">
-          <button type="submit">Создать</button>
+    <!-- Login Section -->
+    <div id="loginSection" class="login-section">
+      <div class="login-card">
+        <div class="login-icon">🔐</div>
+        <h2>Аутентификация</h2>
+        <form id="loginForm">
+          <div class="form-group">
+            <label for="adminKey">Admin Key</label>
+            <input 
+              id="adminKey" 
+              type="password" 
+              placeholder="Введите ключ администратора" 
+              required
+            >
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">Войти</button>
         </form>
-      </section>
-
-      <section>
-        <h2>Товары</h2>
-        <div id="productsList"></div>
-      </section>
+      </div>
     </div>
+
+    <!-- Admin Area (hidden until authenticated) -->
+    <div id="adminArea" class="admin-area hidden">
+      <div class="admin-layout">
+        <!-- Left Column: Create Product Form -->
+        <section class="create-section">
+          <div class="section-header">
+            <h2>➕ Создать товар</h2>
+            <span class="badge-new">Новый</span>
+          </div>
+          
+          <form id="createForm" class="create-form">
+            <div class="form-group">
+              <label for="name">Название товара *</label>
+              <input 
+                id="name" 
+                type="text"
+                placeholder="Например: Белая рубашка Classic Fit" 
+                required
+              >
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="category">Категория *</label>
+                <select id="category" required>
+                  <option value="">Выберите категорию</option>
+                  <option value="shirts">Рубашки</option>
+                  <option value="pants">Брюки</option>
+                  <option value="dresses">Платья</option>
+                  <option value="outerwear">Верхняя одежда</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="price">Цена (сом) *</label>
+                <input 
+                  id="price" 
+                  type="number" 
+                  placeholder="2490" 
+                  min="0"
+                  required
+                >
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="badge">Бейдж (ярлык)</label>
+                <input 
+                  id="badge" 
+                  type="text"
+                  placeholder="Например: Новое"
+                >
+              </div>
+
+              <div class="form-group">
+                <label for="rating">Рейтинг</label>
+                <input 
+                  id="rating" 
+                  type="number" 
+                  placeholder="4.5"
+                  min="0"
+                  max="5"
+                  step="0.1"
+                  value="4.5"
+                >
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="tags">Размеры/Теги (через запятую)</label>
+              <input 
+                id="tags" 
+                type="text"
+                placeholder="XS, S, M, L (автоматически заполнится по умолчанию)"
+              >
+              <small>Оставьте пусто для автозаполнения стандартными размерами</small>
+            </div>
+
+            <div class="form-group">
+              <label for="description">Описание</label>
+              <textarea 
+                id="description" 
+                placeholder="Подробное описание товара..."
+                rows="4"
+              ></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="imageFile">Загрузить изображение</label>
+              <div class="file-upload">
+                <input 
+                  id="imageFile" 
+                  type="file" 
+                  accept="image/*"
+                >
+                <span class="file-label">📷 Выберите изображение</span>
+              </div>
+              <div id="imagePreview" class="image-preview"></div>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block">
+              ✅ Создать товар
+            </button>
+          </form>
+        </section>
+
+        <!-- Right Column: Products List -->
+        <section class="products-section">
+          <div class="section-header">
+            <h2>📦 Товары (<span id="productCount">0</span>)</h2>
+          </div>
+          
+          <div id="productsList" class="products-list">
+            <div class="empty-state">
+              <p>🛍️ Товары будут отображаться здесь</p>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Logout Button -->
+      <div class="logout-section">
+        <button id="logoutBtn" class="btn btn-secondary">Выход</button>
+      </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="toast"></div>
   </div>
+
   <script>
-    // Production backend API base (Render). Change if different.
     window.MARALYM_API_BASE = 'https://maralym-store-4xe7.onrender.com/api';
   </script>
   <script src="admin.js"></script>
