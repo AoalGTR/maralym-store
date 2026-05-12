@@ -13,11 +13,23 @@ const API_BASE = 'https://maralym-store-4xe7.onrender.com/api';
 
 async function initState() {
   try {
-    // Load products from API
-    const productsRes = await fetch(`${API_BASE}/products`);
-    if (productsRes.ok) {
-      const productsData = await productsRes.json();
-      products = productsData.items || [];
+    // Load products from API (with retry for slow backend)
+    let productsLoaded = false;
+    for (let attempt = 0; attempt < 3; attempt++) {
+      try {
+        const productsRes = await fetch(`${API_BASE}/products`, { signal: AbortSignal.timeout(8000) });
+        if (productsRes.ok) {
+          const productsData = await productsRes.json();
+          products = productsData.items || [];
+          localStorage.setItem('cachedProducts', JSON.stringify(products));
+          productsLoaded = true;
+          break;
+        }
+      } catch (err) {
+        console.warn(`Products fetch attempt ${attempt + 1} failed:`, err.message);
+        if (attempt === 2) throw err;
+        await new Promise(r => setTimeout(r, 500 * (attempt + 1))); // Wait 500ms, 1s, 2s
+      }
     }
 
     // Load state from API
@@ -38,6 +50,8 @@ async function initState() {
     }
   } catch (err) {
     // fallback to localStorage when backend not available
+    console.warn('API call failed, using localStorage:', err);
+    products = JSON.parse(localStorage.getItem('cachedProducts')) || [];
     cart = JSON.parse(localStorage.getItem('cart')) || [];
     favorites = JSON.parse(localStorage.getItem('favorites')) || [];
     orders = JSON.parse(localStorage.getItem('orders')) || [];
