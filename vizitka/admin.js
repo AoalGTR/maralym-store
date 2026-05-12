@@ -111,6 +111,41 @@ async function deleteProduct(id) {
 }
 
 // Handle image file selection preview
+const fileUpload = document.querySelector('.file-upload');
+const fileInput = document.getElementById('imageFile');
+
+// Click on the upload area to open file dialog
+if (fileUpload && fileInput) {
+  fileUpload.addEventListener('click', () => {
+    fileInput.click();
+  });
+
+  // Drag and drop support
+  fileUpload.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    fileUpload.style.borderColor = '#667eea';
+    fileUpload.style.background = '#f8f9ff';
+  });
+
+  fileUpload.addEventListener('dragleave', () => {
+    fileUpload.style.borderColor = '#e0e0e0';
+    fileUpload.style.background = 'transparent';
+  });
+
+  fileUpload.addEventListener('drop', (e) => {
+    e.preventDefault();
+    fileUpload.style.borderColor = '#e0e0e0';
+    fileUpload.style.background = 'transparent';
+    
+    const files = e.dataTransfer.files;
+    if (files.length > 0) {
+      fileInput.files = files;
+      const event = new Event('change', { bubbles: true });
+      fileInput.dispatchEvent(event);
+    }
+  });
+}
+
 document.getElementById('imageFile').addEventListener('change', (e) => {
   const file = e.target.files[0];
   const preview = document.getElementById('imagePreview');
