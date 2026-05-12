@@ -3,6 +3,14 @@ const API_BASE = (window.MARALYM_API_BASE && window.MARALYM_API_BASE.replace(/\/
 let ADMIN_KEY = null;
 const DEFAULT_SIZES = ['XS', 'S', 'M', 'L'];
 
+// Resolve backend-served image paths to absolute URLs
+function resolveImageUrl(img) {
+  if (!img) return '';
+  if (img.startsWith('http://') || img.startsWith('https://')) return img;
+  if (img.startsWith('/')) return API_BASE.replace(/\/api$/, '') + img;
+  return img;
+}
+
 // Show toast notification
 function showToast(message, type = 'success') {
   const toast = document.getElementById('toast');
@@ -59,8 +67,9 @@ async function loadProducts() {
     data.items.forEach(p => {
       const card = document.createElement('div');
       card.className = 'product-card';
+      const imgSrc = resolveImageUrl(p.image) || (API_BASE.replace(/\/api$/, '') + '/static/uploads/placeholder.png');
       card.innerHTML = `
-        <img src="${p.image || '/static/uploads/placeholder.png'}" alt="${p.name}">
+        <img src="${imgSrc}" alt="${p.name}">
         <div class="product-info">
           <p class="product-name">${p.name}</p>
           <div class="product-meta">

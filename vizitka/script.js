@@ -11,6 +11,18 @@ let userProfile = { name: '', email: '', phone: '', address: '' };
 
 const API_BASE = 'https://maralym-store-4xe7.onrender.com/api';
 
+// Convert image paths returned by backend to absolute URLs for frontend
+function resolveImageUrl(img) {
+  if (!img) return '';
+  // already absolute
+  if (img.startsWith('http://') || img.startsWith('https://')) return img;
+  // backend serves static at the backend origin (API_BASE without /api)
+  if (img.startsWith('/')) {
+    return API_BASE.replace(/\/api$/, '') + img;
+  }
+  return img;
+}
+
 async function initState() {
   try {
     // Load products from API (with retry for slow backend)
@@ -112,10 +124,11 @@ function renderProducts() {
   
   productsRoot.innerHTML = filtered.map(product => {
     const isFavorite = favorites.includes(product.id);
+    const imageUrl = resolveImageUrl(product.image) || '/static/uploads/placeholder.png';
     return `
       <article class="product-card">
         <div class="product-visual">
-          <div class="product-image" style="background-image: url('${product.image}')"></div>
+          <div class="product-image" style="background-image: url('${imageUrl}')"></div>
           <div class="badge">${product.badge}</div>
           <button class="favorite-btn ${isFavorite ? 'active' : ''}" data-id="${product.id}" title="Добавить в избранное">❤️</button>
         </div>
